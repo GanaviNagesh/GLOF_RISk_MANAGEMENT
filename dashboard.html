@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GLOF Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9f3f8;
+        }
+        div {
+            width: 100%;
+        }
+        .navbar {
+            background-color: #1a3b5d;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .dashboard {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .news-section {
+            background: #ffffff;
+            padding: 40px;
+            margin: 0 auto 60px;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            width: 100%;
+        }
+        .news-title {
+            text-align: center;
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #1a3b5d;
+            margin-bottom: 30px;
+        }
+        .news-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
+        .news-card {
+            background-color: #f9fbfc;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            width: 320px;
+            transition: transform 0.3s ease;
+        }
+        .news-card:hover {
+            transform: translateY(-6px);
+        }
+        .news-image {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+        }
+        .news-content {
+            padding: 16px;
+        }
+        .news-heading {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #103d55;
+            margin-bottom: 10px;
+        }
+        .news-description {
+            font-size: 0.95rem;
+            color: #4a4a4a;
+            margin-bottom: 12px;
+        }
+        .news-link {
+            text-decoration: none;
+            color: #0b74c4;
+            font-weight: 500;
+        }
+        .news-link:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .news-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        .about-section {
+            background: linear-gradient(135deg, #e0f2f1, #f1f8e9);
+            border: 2px solid #a5d6a7;
+            border-radius: 18px;
+            padding: 50px 30px;
+            margin: 40px auto;
+            max-width: 1000px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+        .about-container {
+            text-align: center;
+        }
+        .about-container h2 {
+            font-size: 2.4rem;
+            color: #1a3b5d;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #4caf50;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+        .about-container p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 18px;
+        }
+        /* GLOF Monitoring Section styles */
+        .monitoring-section {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 30px 40px;
+            margin: 40px auto;
+            max-width: 1000px;
+            box-shadow: 0 6px 25px rgba(0,0,0,0.1);
+        }
+        .monitoring-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a3b5d;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        .monitoring-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        select, button {
+            font-size: 1rem;
+            padding: 8px 14px;
+            border-radius: 6px;
+            border: 2px solid #1a3b5d;
+            background-color: white;
+            color: #1a3b5d;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        select:hover, button:hover {
+            background-color: #1a3b5d;
+            color: white;
+        }
+        .status-display {
+            text-align: center;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .status-danger {
+            color: #d32f2f;
+        }
+        .status-safe {
+            color: #388e3c;
+        }
+        .pixel-count {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/dashboard">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="/alert">Alert</a>
+        <a href="/map">Map</a>
+        <a href="/about">About</a>
+    </nav>
+
+    <div class="dashboard">
+        <h2>Welcome to GLOF Detection Dashboard</h2>
+    </div>
+
+    <!-- GLOF Monitoring Section Start -->
+    <div class="monitoring-section" id="glof-monitoring-section">
+        <div class="monitoring-title">Real-Time GLOF Monitoring</div>
+        <div class="monitoring-controls">
+            <select id="lake-select" aria-label="Select Glacial Lake">
+                <option value="tsho-rolpa">Tsho Rolpa (27.87°N, 86.90°E)</option>
+                <option value="imja-tsho">Imja Tsho (27.89°N, 86.93°E)</option>
+                <option value="dig-tsho">Dig Tsho (27.93°N, 86.80°E)</option>
+                <option value="rara-lake">Rara Lake (28.70°N, 81.35°E)</option>
+                <option value="gokyo-lake">Gokyo Lake (27.96°N, 86.81°E)</option>
+            </select>
+            <button id="refresh-btn">Refresh Status</button>
+        </div>
+        <div id="status-display" class="status-display">Loading status...</div>
+        <div id="pixel-count" class="pixel-count"></div>
+    </div>
+    <!-- GLOF Monitoring Section End -->
+
+    <!-- About Us Section Start -->
+    <div class="about-section">
+        <div class="about-container">
+            <h2>About Us</h2>
+            <p>
+                The GLOF Detection Dashboard is an initiative aimed at monitoring and predicting Glacial Lake Outburst Floods (GLOFs)
+                using satellite imagery, real-time data, and AI-based alerts. Our mission is to provide early warnings and data insights
+                to protect Himalayan communities from sudden climate disasters.
+            </p>
+            <p>
+                We are committed to enhancing climate resilience and minimizing disaster risks through innovation, collaboration,
+                and technology. Partnering with researchers, local authorities, and environmental organizations,
+                we aim to deliver accurate information and timely alerts.
+            </p>
+        </div>
+    </div>
+    <!-- About Us Section End -->
+
+    <!-- News Section Start -->
+    <div class="news-section">
+        <div class="news-title">🌍 Latest GLOF News</div>
+        <div class="news-container">
+
+            <!-- News Card 1 -->
+            <div class="news-card">
+                <img src="{{ url_for('static', filename='glof1.png') }}" alt="GLOF Alert Image" class="news-image">
+                <div class="news-content">
+                    <div class="news-heading">Early Warning System Activated in Nepal</div>
+                    <div class="news-description">
+                        Lake Imja showed rising levels. GLOF alert was issued and communities were safely evacuated.
+                    </div>
+                    <a href="https://www.preventionweb.net/news/wmo-strengthens-early-warning-services-nepal" class="news-link">Read more →</a>
+                </div>
+            </div>
+
+            <!-- News Card 2 -->
+            <div class="news-card">
+                <img src="{{ url_for('static', filename='image.png') }}" alt="Glacier Melt Image" class="news-image">
+                <div class="news-content">
+                    <div class="news-heading">Increased Glacier Melt in the Himalayas</div>
+                    <div class="news-description">
+                        Experts report a significant rise in meltwater, increasing the GLOF risk in the region.
+                    </div>
+                    <a href="http://welthungerhilfe.org/global-food-journal/rubrics/climate-resources/glacier-melt-in-the-himalayas-endangers-south-asia" class="news-link">Read more →</a>
+                </div>
+            </div>
+
+            <!-- News Card 3 -->
+            <div class="news-card">
+                <img src="{{ url_for('static', filename='glof3.png') }}" alt="Monitoring Station" class="news-image">
+                <div class="news-content">
+                    <div class="news-heading">Real-Time Monitoring in Sikkim Launched</div>
+                    <div class="news-description">
+                        New sensors provide real-time updates on glacial lakes, improving GLOF prediction accuracy.
+                    </div>
+                    <a href="https://apacnewsnetwork.com/2025/05/sikkim-darshan-digital-platform-launched-to-boost-smart-tourism/" class="news-link">Read more →</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- News Section End -->
+
+<script>
+    // Map lake values to display names for user-friendly UI
+    const lakeNameMap = {
+        "tsho-rolpa": "Tsho Rolpa",
+        "imja-tsho": "Imja Tsho",
+        "dig-tsho": "Dig Tsho",
+        "rara-lake": "Rara Lake",
+        "gokyo-lake": "Gokyo Lake"
+    };
+
+    async function fetchGLOFStatus(lake) {
+        const statusDisplay = document.getElementById('status-display');
+        const pixelCountDisplay = document.getElementById('pixel-count');
+
+        statusDisplay.textContent = "Loading status...";
+        pixelCountDisplay.textContent = "";
+
+        try {
+            const response = await fetch(`/api/glof-monitoring?lake=${lake}`);
+            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+            const data = await response.json();
+
+            const lakeName = lakeNameMap[lake] || lake;
+            statusDisplay.textContent = `${lakeName} Status: ${data.status}`;
+            pixelCountDisplay.textContent = `Water Pixel Count: ${data.pixels}`;
+
+            if (data.status === "GLOF Detected") {
+                statusDisplay.classList.remove('status-safe');
+                statusDisplay.classList.add('status-danger');
+            } else {
+                statusDisplay.classList.remove('status-danger');
+                statusDisplay.classList.add('status-safe');
+            }
+        } catch (error) {
+            statusDisplay.textContent = "Failed to fetch status. Please try again later.";
+            statusDisplay.classList.remove('status-danger', 'status-safe');
+            pixelCountDisplay.textContent = "";
+            console.error('Error fetching GLOF status:', error);
+        }
+    }
+
+    // Fetch initial status on page load for default lake
+    window.addEventListener('DOMContentLoaded', () => {
+        const lakeSelect = document.getElementById('lake-select');
+        fetchGLOFStatus(lakeSelect.value);
+    });
+
+    // Refresh button click handler
+    document.getElementById('refresh-btn').addEventListener('click', () => {
+        const lakeSelect = document.getElementById('lake-select');
+        fetchGLOFStatus(lakeSelect.value);
+    });
+</script>
+
+</body>
+</html>

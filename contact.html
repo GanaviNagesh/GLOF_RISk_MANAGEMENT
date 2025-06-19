@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #e9f3f8;
+    }
+
+    .navbar {
+      background-color: #1a3b5d;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .contact-container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-container h2 {
+      text-align: center;
+      color: #1a3b5d;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .form-field {
+      flex: 1 1 45%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-field.full {
+      flex: 1 1 100%;
+    }
+
+    .form-field label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    .form-field textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 12px 30px;
+      background-color: #007a5e;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #005f48;
+    }
+
+    @media (max-width: 768px) {
+      .form-field {
+        flex: 1 1 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="/dashboard">Home</a>
+    <a href="/contact">Contact</a>
+    <a href="/alert">Alert</a>
+    <a href="/map">Map</a>
+    <a href="/about">About</a>
+  </nav>
+
+  <div class="contact-container">
+    <h2>GET IN TOUCH</h2>
+    <form method="POST" action="/submit_contact_form">
+      <div class="form-group">
+        <div class="form-field">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" name="firstName" placeholder="Please enter first name..." required>
+        </div>
+        <div class="form-field">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" name="lastName" placeholder="Please enter last name..." required>
+        </div>
+        <div class="form-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="Please enter email..." required>
+        </div>
+        <div class="form-field">
+          <label for="phoneNumber">Phone Number</label>
+          <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Please enter phone number...">
+        </div>
+        <div class="form-field full">
+          <label for="query">What do you have in mind</label>
+          <textarea id="query" name="query" placeholder="Please enter your message..." required></textarea>
+        </div>
+      </div>
+      <button class="submit-btn" type="submit">Submit</button>
+    </form>
+  </div>
+
+</body>
+</html>

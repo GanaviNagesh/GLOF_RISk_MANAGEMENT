@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NDWI Threshold Analysis</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+    }
+     body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .priority-form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #1a3b5d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #1a3b5d;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9f3f8;
+        }
+
+        .navbar {
+            background-color: #1a3b5d;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            text-align: center;
+            padding: 40px 20px;
+        }
+  </style>
+</head>
+<body class="bg-[#F3F7FC] p-6">
+      <nav class="navbar">
+        <a href="/dashboard">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="/alert">Alert</a>
+        <a href="/map">Map</a>
+        <a hred="/about">About</a>
+    </nav>
+  <main class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+  
+    <!-- NDWI Explanation -->
+    <div>
+    <section class="bg-white rounded-md p-6 shadow-sm border border-transparent">
+      <h2 class="text-slate-900 font-semibold text-lg mb-1">NDWI Interpretation</h2>
+      <p class="text-slate-500 text-sm mb-4">Understanding water index values</p>
+      <p class="text-slate-900 text-base mb-4">
+        NDWI (Normalized Difference Water Index) detects water content using satellite data.
+      </p>
+      <ul class="list-disc list-inside text-slate-900 mb-4">
+        <li><strong>&gt; 0.5:</strong> High water, possible flooding</li>
+        <li><strong>0.3 - 0.5:</strong> Normal water level</li>
+        <li><strong>&lt; 0.3:</strong> Low water or ice</li>
+      </ul>
+      <p class="text-slate-900 text-base">
+        Sudden NDWI spikes could indicate GLOF risk and require monitoring.
+      </p>
+    </section>
+
+    </div>
+    <div>
+    <!-- Threshold Controls -->
+    <section class="bg-white rounded-md p-6 shadow-sm border border-transparent">
+      <h2 class="text-slate-900 font-semibold text-lg mb-1">Threshold Analysis</h2>
+      <p class="text-slate-500 text-sm mb-6">Adjust alert thresholds below</p>
+
+      <!-- Critical -->
+      <div class="mb-6">
+        <div class="flex justify-between mb-1 text-slate-900">
+          <label for="criticalThreshold">Critical Threshold (<span id="criticalValue">0.48</span>)</label>
+          <span class="text-red-600 text-sm">3 breaches</span>
+        </div>
+        <input type="range" id="criticalThreshold" min="0" max="1" step="0.01" value="0.48"
+               class="w-full h-2 bg-slate-300 accent-red-600 cursor-pointer" />
+        <div class="w-full h-2 bg-slate-300 mt-2 rounded-full overflow-hidden">
+          <div id="criticalBar" class="h-2 bg-red-600" style="width: 48%"></div>
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div class="mb-6">
+        <div class="flex justify-between mb-1 text-slate-900">
+          <label for="warningThreshold">Warning Threshold (<span id="warningValue">0.45</span>)</label>
+          <span class="text-amber-500 text-sm">7 breaches</span>
+        </div>
+        <input type="range" id="warningThreshold" min="0" max="1" step="0.01" value="0.45"
+               class="w-full h-2 bg-slate-300 accent-amber-500 cursor-pointer" />
+        <div class="w-full h-2 bg-slate-300 mt-2 rounded-full overflow-hidden">
+          <div id="warningBar" class="h-2 bg-amber-500" style="width: 45%"></div>
+        </div>
+      </div>
+
+      <!-- Monitoring -->
+      <div>
+        <div class="flex justify-between mb-1 text-slate-900">
+          <label for="monitoringThreshold">Monitoring Threshold (<span id="monitoringValue">0.40</span>)</label>
+          <span class="text-blue-600 text-sm">12 breaches</span>
+        </div>
+        <input type="range" id="monitoringThreshold" min="0" max="1" step="0.01" value="0.40"
+               class="w-full h-2 bg-slate-300 accent-blue-600 cursor-pointer" />
+        <div class="w-full h-2 bg-slate-300 mt-2 rounded-full overflow-hidden">
+          <div id="monitoringBar" class="h-2 bg-blue-600" style="width: 40%"></div>
+        </div>
+      </div>
+      
+    </section>
+</div>
+  </main>
+
+  <!-- Threshold JavaScript -->
+  <script>
+    function updateBar(inputId, valueId, barId) {
+      const input = document.getElementById(inputId);
+      const valueSpan = document.getElementById(valueId);
+      const bar = document.getElementById(barId);
+
+      input.addEventListener('input', () => {
+        const value = parseFloat(input.value);
+        valueSpan.textContent = value.toFixed(2);
+        bar.style.width = (value * 100) + '%';
+      });
+    }
+
+    updateBar('criticalThreshold', 'criticalValue', 'criticalBar');
+    updateBar('warningThreshold', 'warningValue', 'warningBar');
+    updateBar('monitoringThreshold', 'monitoringValue', 'monitoringBar');
+  </script>
+</body>
+</html>

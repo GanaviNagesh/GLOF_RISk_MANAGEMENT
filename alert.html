@@ -1,0 +1,112 @@
+<!-- alert.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alert Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            margin: 0;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        .priority-form {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #1a3b5d;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        button:hover {
+            background-color: #1a3b5d;
+        }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e9f3f8;
+        }
+
+        .navbar {
+            background-color: #1a3b5d;
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .dashboard {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+    </style>
+</head>
+<body>
+        <nav class="navbar">
+        <a href="/dashboard">Home</a>
+        <a href="/contact">Contact</a>
+        <a href="/alert">Alert</a>
+        <a href="/map">Map</a>
+        <a href="/about">About</a>
+    </nav>
+    <div class="dashboard">
+        <h1>Alert Management</h1>
+        {% if alert_sent %}
+    <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+        ✅ Alert has been successfully sent!
+    </div>
+{% endif %}
+
+        <p>Send manual SMS alert based on priority level for GLOF events.</p>
+
+        <div class="priority-form">
+            <form action="{{ url_for('manual_alert') }}" method="POST">
+                <label for="priority">Select Alert Priority:</label>
+                <select name="priority" id="priority" required>
+                    <option value="High Priority 🚨">High Priority</option>
+                    <option value="Medium Priority ⚠️">Medium Priority</option>
+                    <option value="Low Priority ℹ️">Low Priority</option>
+                </select>
+
+                <label for="message">Custom Alert Message:</label>
+                <textarea name="message" id="message" rows="4" placeholder="Type your alert message here..." required></textarea>
+
+                <button type="submit">Send Alert</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
